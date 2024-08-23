@@ -1,3 +1,5 @@
+require "active_support/concern"
+
 module LoggingMiddlewareGem
   module LoggingConcern
     extend ActiveSupport::Concern

@@ -1,7 +1,7 @@
 require "logging_middleware_gem/version"
 require "logging_middleware_gem/version"
 require "logging_middleware_gem/middleware"
-require "logging_middleware_gem/concern"
+require "logging_middleware_gem/logging_concern"
 require "logging_middleware_gem/models/backoffice_log"
 
 

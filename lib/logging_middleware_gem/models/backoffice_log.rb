@@ -1,3 +1,5 @@
+require "mongoid"
+
 module LoggingMiddlewareGem
   module Models
     class BackofficeLog

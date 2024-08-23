@@ -1,5 +1,13 @@
 require "bundler/setup"
+require "rack"
 require "logging_middleware_gem"
+require 'rails'
+require 'action_dispatch'
+require 'flipper'
+require 'pry'
+require 'pry-nav'
+require 'pry-remote'
+
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -11,4 +19,8 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+end
+
+Flipper.configure do |config|
+  config.adapter { Flipper::Adapters::Memory.new }
 end

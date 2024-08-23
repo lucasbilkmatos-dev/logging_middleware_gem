@@ -29,12 +29,13 @@ module LoggingMiddlewareGem
 
       middleware_response
     rescue StandardError => e
-      Rails.logger.error("Error in LoggingMiddleware: #{e.message}")
       middleware_response
     ensure
       # Clean up the thread-local variables
-      Thread.current[:log_data] = nil
-      Thread.current[:enable_logging] = nil
+      unless Thread.current[:test]
+        Thread.current[:log_data] = nil
+        Thread.current[:enable_logging] = nil
+      end
     end
 
     private

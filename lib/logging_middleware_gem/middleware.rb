@@ -29,7 +29,7 @@ module LoggingMiddlewareGem
 
       middleware_response
     rescue StandardError => e
-      raise e
+      Rails.logger.error("Error in LoggingMiddlewareGem: #{e.message}")
 
       middleware_response
     ensure
@@ -62,6 +62,7 @@ module LoggingMiddlewareGem
     end
 
     def build_request_log
+      log_data[:http][:request] = {}
       log_data[:http][:request][:http_verb] = request.request_method
       log_data[:http][:request][:route] = request.fullpath
       log_data[:http][:request][:user_agent] = request.user_agent
@@ -85,6 +86,7 @@ module LoggingMiddlewareGem
     end
 
     def build_response_headers_log
+      log_data[:http][:response] = {}
       log_data[:http][:response][:status] = status
       log_data[:http][:response][:headers] = sanitize_headers(headers)
     end

@@ -29,6 +29,8 @@ module LoggingMiddlewareGem
 
       middleware_response
     rescue StandardError => e
+      raise e
+
       middleware_response
     ensure
       # Clean up the thread-local variables

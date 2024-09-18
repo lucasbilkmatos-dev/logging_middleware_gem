@@ -18,7 +18,7 @@ module LoggingMiddlewareGem
     end
 
     def add_to_log_data(key, value)
-      log_data[:response][key] = value
+      log_data[:payload][key] = value
     end
 
     private

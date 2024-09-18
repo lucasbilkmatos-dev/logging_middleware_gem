@@ -1,7 +1,7 @@
 module LoggingMiddlewareGem
   class Middleware
     SENSITIVE_PARAMS = %w[authenticity_token password token].freeze
-    SENSITIVE_HEADERS = %w[authorization cookie set-cookie www-authenticate location refresh x-forwarded-for via forwarded script_name query_string gateway_interface request_uri path_info remote_addr routes_17060_script_name original_fullpath original_script_name rack_mini_profiler_original_script_name link referrer-policy content-type charset vary etag cache-control].freeze
+    SENSITIVE_HEADERS = %w[request_method request_path authorization cookie set-cookie www-authenticate location refresh x-forwarded-for via forwarded script_name query_string gateway_interface request_uri path_info remote_addr routes_17060_script_name original_fullpath original_script_name rack_mini_profiler_original_script_name link referrer-policy content-type charset vary etag cache-control routes_19900_script_name].freeze
 
     attr_reader :env, :request, :user, :log_data, :status, :headers, :response
 
@@ -60,18 +60,21 @@ module LoggingMiddlewareGem
     end
 
     def build_request_log
-      log_data[:request][:http_verb] = request.request_method
-      log_data[:request][:route] = request.fullpath
-      log_data[:request][:user_agent] = request.user_agent
-      log_data[:request][:ip] = request.remote_ip
+      log_data[:http][:request][:http_verb] = request.request_method
+      log_data[:http][:request][:route] = request.fullpath
+      log_data[:http][:request][:user_agent] = request.user_agent
+      log_data[:http][:request][:remote_ip] = request.remote_ip
+      log_data[:http][:request][:url] = request.original_url
+      log_data[:http][:request][:request_id] = request.uuid
     end
 
     def build_request_params_log
-      log_data[:request][:params] = sanitize_params(request.params)
+      log_data[:http][:request][:query_params] = sanitize_params(request.query_parameters)
+      log_data[:http][:request][:request_params] = sanitize_params(request.request_parameters)
     end
 
     def build_request_headers_log
-      log_data[:request][:headers] = sanitize_headers(request.headers.to_h)
+      log_data[:http][:request][:headers] = sanitize_headers(request.headers.to_h)
     end
 
     def build_user_log
@@ -80,8 +83,8 @@ module LoggingMiddlewareGem
     end
 
     def build_response_headers_log
-      log_data[:response][:status] = status
-      log_data[:response][:headers] = sanitize_headers(headers)
+      log_data[:http][:response][:status] = status
+      log_data[:http][:response][:headers] = sanitize_headers(headers)
     end
 
     def sanitize_params(params)
@@ -97,9 +100,9 @@ module LoggingMiddlewareGem
 
     def save_log_data_to_mongo
       log = Models::BackofficeLog.create!(
-        request: JSON.parse(log_data[:request].to_json),
+        http: JSON.parse(log_data[:http].to_json),
         user: JSON.parse(log_data[:user].to_json),
-        payload: JSON.parse(log_data[:response].to_json)
+        payload: JSON.parse(log_data[:payload].to_json)
       )
 
       Rails.logger.info("LogData: #{log_data.to_json}")

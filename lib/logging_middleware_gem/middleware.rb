@@ -53,9 +53,9 @@ module LoggingMiddlewareGem
       @request = ActionDispatch::Request.new(env)
       @user = request.env['warden']&.user
       @log_data = Thread.current[:log_data] ||= {
-        request: {},
+        http: {},
         user: {},
-        response: {}
+        payload: {}
       }
     end
 

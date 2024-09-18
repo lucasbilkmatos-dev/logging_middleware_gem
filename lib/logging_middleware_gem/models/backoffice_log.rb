@@ -9,10 +9,9 @@ module LoggingMiddlewareGem
       store_in collection: 'backoffice-log-collection'
 
       field :name, type: String
-      field :request, type: Hash
+      field :http, type: Hash
       field :user, type: Hash
       field :payload, type: Hash
-      field :response, type: Hash
     end
   end
 end

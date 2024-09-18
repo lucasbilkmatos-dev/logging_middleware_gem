@@ -11,9 +11,9 @@ module LoggingMiddlewareGem
 
     def log_data
       Thread.current[:log_data] ||= {
-        request: {},
+        http: {},
         user: {},
-        response: {}
+        payload: {}
       }
     end
 

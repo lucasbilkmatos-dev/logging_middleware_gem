@@ -1,7 +1,7 @@
 module LoggingMiddlewareGem
   class Middleware
     SENSITIVE_PARAMS = %w[authenticity_token password token].freeze
-    SENSITIVE_HEADERS = %w[request_method request_path authorization cookie set-cookie www-authenticate location refresh x-forwarded-for via forwarded script_name query_string gateway_interface request_uri path_info remote_addr routes_17060_script_name original_fullpath original_script_name rack_mini_profiler_original_script_name link referrer-policy content-type charset vary etag cache-control routes_19900_script_name].freeze
+    SENSITIVE_HEADERS = %w[request_method request_path authorization cookie set-cookie www-authenticate location refresh x-forwarded-for via forwarded script_name query_string gateway_interface request_uri path_info remote_addr routes_17060_script_name original_fullpath original_script_name rack_mini_profiler_original_script_name link referrer-policy content-type charset vary etag cache-control].freeze
 
     attr_reader :env, :request, :user, :log_data, :status, :headers, :response
 
@@ -76,6 +76,7 @@ module LoggingMiddlewareGem
     def build_request_params_log
       log_data[:http][:request][:query_params] = sanitize_params(request.query_parameters)
       log_data[:http][:request][:request_params] = sanitize_params(request.request_parameters)
+      log_data[:http][:request][:params] = sanitize_params(request.params)
     end
 
     def build_request_headers_log
@@ -100,7 +101,7 @@ module LoggingMiddlewareGem
     def sanitize_headers(headers)
       headers.reject do |key, _value|
         SENSITIVE_HEADERS.include?(key.downcase) ||
-          key.downcase.start_with?('rack.', 'puma.', 'action_dispatch.', 'warden', 'http_', 'server', 'action_controller.', 'x-')
+          key.downcase.start_with?('rack.', 'puma.', 'action_dispatch.', 'warden', 'http_', 'server', 'action_controller.', 'x-', 'routes_19')
       end
     end
 

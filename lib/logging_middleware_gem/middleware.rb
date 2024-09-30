@@ -45,8 +45,6 @@ module LoggingMiddlewareGem
     rescue StandardError => e
       Rails.logger.error("Error in LoggingMiddlewareGem: #{e.message}")
 
-      raise e
-
       middleware_response
     ensure
       # Clean up the thread-local variables

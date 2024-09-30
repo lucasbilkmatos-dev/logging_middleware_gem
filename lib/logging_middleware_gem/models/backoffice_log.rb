@@ -6,7 +6,9 @@ module LoggingMiddlewareGem
       include Mongoid::Document
       include Mongoid::Timestamps
 
-      store_in collection: 'backoffice-log-collection'
+      MONGO_DB_LOG_COLLECTION = ENV.fetch("MONGO_DB_LOG_COLLECTION", "backoffice-log-collection")
+
+      store_in collection: MONGO_DB_LOG_COLLECTION
 
       field :name, type: String
       field :http, type: Hash

@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/lucasbilkmatos/logging_middleware_gem"
   spec.license       = "MIT"
 
-  spec.required_ruby_version = '>= 3.1.2'
+  spec.required_ruby_version = '>= 3.4.4'
 
   # Metadata for RubyGems
   if spec.respond_to?(:metadata)
@@ -34,11 +34,11 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Add runtime dependencies
-  spec.add_dependency "mongo", "~> 2"
-  spec.add_dependency "rails", "~> 7.0.8.4"
-  spec.add_dependency "mongoid", "~> 7.0"
-  spec.add_dependency "flipper", "~> 1.3.0"
-  spec.add_dependency "activesupport", "~> 7.0.8.4"
+  spec.add_dependency "mongo"
+  spec.add_dependency "rails"
+  spec.add_dependency "mongoid"
+  spec.add_dependency "flipper"
+  spec.add_dependency "activesupport"
   spec.add_dependency "rack"
   spec.add_dependency "pry-nav"
   spec.add_dependency "pry-remote"
